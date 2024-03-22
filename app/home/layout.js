@@ -80,7 +80,7 @@ export default function ProtectedLayout({ children }) {
               height={35}
               className="w-auto h-auto"
             />
-            <div className="font-bold text-xl ">Impact Stream</div>
+            <div className="font-bold text-xl ">Impact Voice</div>
           </div>
           <div onClick={handleHamburger}>
             <Image

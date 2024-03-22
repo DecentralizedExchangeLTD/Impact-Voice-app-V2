@@ -26,7 +26,7 @@ export default function ProposalForm() {
       </div>
       <div className="w-full">
         <h1 className="font-semibold text-sm mb-1">
-          Don't know how to write a proposal?
+          Don&apos;t know how to write a proposal?
         </h1>
         <p
           onClick={() => router.push("/proposaltemplate")}

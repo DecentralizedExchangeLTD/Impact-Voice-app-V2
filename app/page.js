@@ -19,9 +19,9 @@ export default function AuthPage() {
             priority
           />
           <h1 className="xl:text-9xl 2xl:text-[160px] lg:text-8xl md:text-7xl text-[50px] font-semibold text-center">
-            GreenPill
+            Impact
             <br />
-            Africa
+            Voice
           </h1>
           <div className="w-[90%] rounded-t-3xl bg-white h-96 flex flex-col items-center justify-center px-5 gap-5 text-center text-xs">
             <p className="w-5/6 text-sm">

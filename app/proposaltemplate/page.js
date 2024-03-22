@@ -76,16 +76,16 @@ export default function ProposalForm() {
             web and mobile applications.
           </li>
           <li>
-            Technology Integration: Develop the platform's backend, integrate
-            IoT devices, blockchain, and AI functionalities.
+            Technology Integration: Develop the platform&apos;s backend,
+            integrate IoT devices, blockchain, and AI functionalities.
           </li>
           <li>
             Pilot Testing: Launch a pilot program in selected tourist
             destinations to refine and validate the platform.
           </li>
           <li>
-            Full-Scale Rollout: Expand the platform's availability and engage
-            with a broader range of stakeholders.
+            Full-Scale Rollout: Expand the platform&apos;s availability and
+            engage with a broader range of stakeholders.
           </li>
         </ul>
 

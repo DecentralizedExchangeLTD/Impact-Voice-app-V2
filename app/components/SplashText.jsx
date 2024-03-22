@@ -21,9 +21,9 @@ function SplashText() {
         priority
       />
       <h1 className="xl:text-9xl 2xl:text-[160px] lg:text-8xl md:text-7xl text-[50px] font-semibold text-center">
-        GreenPill
+        Impact
         <br />
-        Africa
+        Voice
       </h1>
       <p className="absolute bottom-0 pb-4 font-extralight text-xs">
         powered by <b>impact stream</b>
