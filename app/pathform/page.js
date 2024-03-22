@@ -41,7 +41,7 @@ export default function PathPage() {
         <div className="w-full rounded-3xl bg-white flex flex-col gap-5 px-4 py-6">
           <Form
             layout="vertical"
-            name="basic"
+            name="profile"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -136,7 +136,7 @@ export default function PathPage() {
                 size="large"
                 type="default"
                 htmlType="button"
-                onClick={() => router.push("/home")}
+                onClick={() => router.push("/home?title=Your Proposals")}
               >
                 Skip this step
               </Button>

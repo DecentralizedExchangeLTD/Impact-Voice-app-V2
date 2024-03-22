@@ -16,6 +16,7 @@ export default function PathPage() {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       owner: "John Doe",
+      voices: 35,
     },
     {
       title: "Well Project",
@@ -23,6 +24,7 @@ export default function PathPage() {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       owner: "John Doe",
+      voices: 2065,
     },
     {
       title: "Well Project",
@@ -30,6 +32,7 @@ export default function PathPage() {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       owner: "John Doe",
+      voices: 102,
     },
     {
       title: "Well Project",
@@ -37,6 +40,7 @@ export default function PathPage() {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       owner: "John Doe",
+      voices: 4,
     },
     {
       title: "Well Project",
@@ -44,6 +48,7 @@ export default function PathPage() {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       owner: "John Doe",
+      voices: 80,
     },
   ];
 
@@ -71,21 +76,26 @@ export default function PathPage() {
                 description={item.description}
                 location={item.location}
                 owner={item.owner}
+                canvote={title === "Your Voice" ? "/thumbprint.svg" : ""}
+                voices={title === "Your Voice" ? item.voices : ""}
               />
             );
           })}
         </div>
-        <div className="fixed bottom-0 py-4 font-extralight text-xs bg-[#ffffff90] backdrop-blur-2xl w-full flex flex-col items-center gap-3">
-          <Button
-            className="w-5/6 text-green-500 border border-green-500 text-lg"
-            size="large"
-          >
-            Write a Proposal
-          </Button>
-          <p>
-            powered by <b>impact stream</b>
-          </p>
-        </div>
+        {title === "Your Proposals" && (
+          <div className="fixed bottom-0 py-4 font-extralight text-xs bg-[#ffffff90] backdrop-blur-2xl w-full flex flex-col items-center gap-3">
+            <Button
+              className="w-5/6 text-green-500 border border-green-500 text-lg"
+              size="large"
+              onClick={() => router.push("/proposalform")}
+            >
+              Write a Proposal
+            </Button>
+            <p>
+              powered by <b>impact stream</b>
+            </p>
+          </div>
+        )}
       </div>
     </Suspense>
   );

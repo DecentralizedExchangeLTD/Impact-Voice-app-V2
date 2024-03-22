@@ -7,14 +7,17 @@ export const ProposalCard = ({
   location,
   description,
   owner,
+  canvote,
 }) => {
   return (
     <div className="w-full flex flex-col p-4 rounded-2xl bg-white gap-2">
       <div className="flex flex-row items-center justify-between">
         <h1 className="font-semibold">{title}</h1>
-        <div>
+        <div className="flex flex-row gap-2 items-center text-xs font-semibold">
           <span>{voices}</span>
-          <Image src="/thumbprint.svg" width={20} height={20} alt="vote" />
+          {canvote && voices && (
+            <Image src={canvote} width={15} height={15} alt="" />
+          )}
         </div>
       </div>
       <div className="flex flex-row gap-1 items-center">

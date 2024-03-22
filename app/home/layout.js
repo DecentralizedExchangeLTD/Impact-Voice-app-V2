@@ -17,6 +17,7 @@ export default function ProtectedLayout({ children }) {
   };
 
   const handleNavigation = (link, title) => {
+    setIsOpen(false);
     router.push(`${link}?title=` + title);
   };
 
@@ -29,10 +30,12 @@ export default function ProtectedLayout({ children }) {
     {
       title: "Your Grants",
       icon: "/yourgrants.svg",
+      link: "/home",
     },
     {
       title: "Your Proposals",
       icon: "/yourproposals.svg",
+      link: "/home",
     },
     {
       title: "Donate",
@@ -41,6 +44,7 @@ export default function ProtectedLayout({ children }) {
     {
       title: "Awarded Grants",
       icon: "/awardedgrants.svg",
+      link: "/home",
     },
     {
       title: "My Cart",
@@ -67,18 +71,22 @@ export default function ProtectedLayout({ children }) {
           isOpen ? "bg-[#fafafa] rounded-b-3xl" : "bg-transparent"
         }`}
       >
-        <div className="w-full h-20 flex flex-row items-center justify-between px-4">
-          <Image
-            src="/logo.png"
-            alt="impact stream greenpill africa logo"
-            width={35}
-            height={35}
-            className="w-auto h-auto"
-          />
+        <div className="w-full h-20 flex flex-row items-center justify-between px-4 bg-[#ffffff50]">
+          <div className="flex flex-row gap-3 items-center">
+            <Image
+              src="/logo.png"
+              alt="impact stream greenpill africa logo"
+              width={35}
+              height={35}
+              className="w-auto h-auto"
+            />
+            <div className="font-bold text-xl ">Impact Stream</div>
+          </div>
           <div onClick={handleHamburger}>
             <Image
               src={isOpen ? "/close.svg" : "/hamburger.svg"}
               alt="hamburger"
+              priority
               width={30}
               height={30}
               className="w-auto h-auto"
@@ -96,7 +104,7 @@ export default function ProtectedLayout({ children }) {
             return (
               <div
                 key={index}
-                className="flex items-center gap-3 py-1 w-full"
+                className="flex items-center gap-3 py-1 w-full active:border-y active:border-black"
                 onClick={() => handleNavigation(item.link, item.title)}
               >
                 {" "}
