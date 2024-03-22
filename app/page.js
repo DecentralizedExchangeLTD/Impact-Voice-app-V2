@@ -13,7 +13,7 @@ export default function AuthPage() {
         <div className="fixed bottom-0 w-full flex flex-col items-center gap-10">
           <Image
             src="/africa.png"
-            alt="Greenpill Africa"
+            alt="Impact Voice"
             width={200}
             height={200}
             priority
@@ -26,7 +26,7 @@ export default function AuthPage() {
           <div className="w-[90%] rounded-t-3xl bg-white h-96 flex flex-col items-center justify-center px-5 gap-5 text-center text-xs">
             <p className="w-5/6 text-sm">
               To sign-in enter your phone number beginning with country code
-              228, then check for a message from Impact Stream (Sandbox) and
+              228, then check for a message from Impact Voice (Sandbox) and
               enter your code in the pop-up.
             </p>
             <Button
