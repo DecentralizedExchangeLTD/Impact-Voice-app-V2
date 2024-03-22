@@ -68,7 +68,9 @@ export default function ProtectedLayout({ children }) {
     <section className={inter.className}>
       <nav
         className={`w-full fixed top-0 bg-[#ffffff90] backdrop-blur-md ${
-          isOpen ? "bg-[#fafafa] rounded-b-3xl" : "bg-transparent"
+          isOpen
+            ? "bg-[#fafafa] backdrop-blur-xl rounded-b-3xl"
+            : "bg-transparent backdrop-blur-xl"
         }`}
       >
         <div className="w-full h-20 flex flex-row items-center justify-between px-4 bg-[#ffffff50]">
