@@ -3,9 +3,27 @@ import Image from "next/image";
 import Splash from "./components/Splash";
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function AuthPage() {
   const router = useRouter();
+  const { ready, authenticated, login, logout } = usePrivy();
+  const disableLogin = !ready || (ready && authenticated);
+
+  const handleSignIn = async () => {
+    if (!ready) {
+      return;
+    }
+
+    if (ready && !authenticated) {
+      login();
+    }
+  };
+
+  if (ready && authenticated) {
+    router.push("/selectpath");
+  }
+
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-between">
       <Splash />
@@ -30,12 +48,13 @@ export default function AuthPage() {
               enter your code in the pop-up.
             </p>
             <Button
+              loading={disableLogin}
               className="bg-[#38C793] w-full "
               type="primary"
               size="large"
-              onClick={() => router.push("/selectpath")}
+              onClick={handleSignIn}
             >
-              Sign in
+              {disableLogin ? "Please wait.." : "Sign in"}
             </Button>
             <p className="w-5/6">
               You will need Meta Mask to sign in with your wallet address. If

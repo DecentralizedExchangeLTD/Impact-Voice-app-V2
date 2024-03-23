@@ -5,15 +5,18 @@ import { Path } from "../components/Path";
 const paths = [
   {
     title: "Community",
-    subtitle: "Your information will not be shared with the",
+    image: "/community.jpg",
+    // subtitle: "Your information will not be shared with the",
   },
   {
     title: "Donor",
-    subtitle: "Your information will not be shared with the",
+    image: "/donor.jpg",
+    // subtitle: "Your information will not be shared with the",
   },
   {
     title: "Admin",
-    subtitle: "Your information will not be shared with the",
+    image: "/admin.jpg",
+    // subtitle: "Your information will not be shared with the",
   },
 ];
 
@@ -26,7 +29,7 @@ export default function PathPage() {
 
   return (
     <div className="w-full h-full px-4 py-10 flex flex-col items-center gap-10">
-      <div className="w-full">
+      <div className="w-full text-center">
         <h1 className="font-semibold text-xl mb-1">Choose your Path</h1>
         <p className="text-xs font-light">
           Kindly select your path to proceed further!
@@ -40,6 +43,7 @@ export default function PathPage() {
               key={index}
               title={item.title}
               subtitle={item.subtitle}
+              image={item.image}
             />
           );
         })}

@@ -2,17 +2,62 @@
 import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Form, Input } from "antd";
+import { AuthService } from "../services/authService";
+import { useWallets } from "@privy-io/react-auth";
 
 export default function PathPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedPath = searchParams.get("selectedPath");
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const { ready, wallets } = useWallets();
+
+  const onFinish = async (values) => {
+    const wallet = ready && wallets[0];
+    const formValues = await values;
+    const provider = await wallet.getEthereumProvider();
+
+    const address = wallet.address;
+    const message = `Complete profile form for ${selectedPath}, is the message I am signing`;
+    const signature = await provider.request({
+      method: "personal_sign",
+      params: [message, address],
+    });
+
+    console.log("my connected wallet is:", wallet);
+    console.log("my provider is:", provider);
+    console.log("my form values are:", formValues);
+    console.log("my message is:", message);
+    console.log("my signature is:", signature);
+
+    AuthService.completeUserProfile(
+      formValues.givenname,
+      formValues.familyname,
+      formValues.location,
+      formValues.lga,
+      formValues.phone,
+      formValues.email,
+      signature
+    );
+    // console.log(formValues);
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const handleSkip = (path) => {
+    switch (true) {
+      case path === "Community":
+        router.push("/home?title=Your Proposals");
+        break;
+      case path === "Donor":
+        router.push("/home/donations");
+        break;
+
+      default:
+        router.push("/home/dashboard");
+        break;
+    }
   };
 
   return (
@@ -31,7 +76,9 @@ export default function PathPage() {
           >
             &lt;-
           </p>
-          <p>{selectedPath ? selectedPath : ""}</p>
+          <p className={!selectedPath && "text-red-500"}>
+            {selectedPath ? selectedPath : "Invalid Selection"}
+          </p>
           <p className="px-6"></p>
         </div>
         <div className="w-full">
@@ -73,8 +120,8 @@ export default function PathPage() {
               <Input placeholder="Enter Family name" />
             </Form.Item>{" "}
             <Form.Item
-              label="City/State/Country"
-              name="country"
+              label="Location"
+              name="location"
               rules={[
                 {
                   required: true,
@@ -136,7 +183,7 @@ export default function PathPage() {
                 size="large"
                 type="default"
                 htmlType="button"
-                onClick={() => router.push("/home?title=Your Proposals")}
+                onClick={() => handleSkip(selectedPath)}
               >
                 Skip this step
               </Button>
