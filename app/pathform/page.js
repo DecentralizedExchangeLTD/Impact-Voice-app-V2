@@ -1,5 +1,5 @@
 "use client";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Form, Input } from "antd";
 import { AuthService } from "../services/authService";
@@ -9,43 +9,37 @@ export default function PathPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedPath = searchParams.get("selectedPath");
+  const [name, setName] = useState();
+
+  const [profileForm] = Form.useForm();
 
   const { ready, wallets } = useWallets();
 
   const onFinish = async (values) => {
     const wallet = ready && wallets[0];
+    await wallet.switchChain(11155111);
     const formValues = await values;
-    const provider = await wallet.getEthereumProvider();
+    const provider = await wallet.getEthersProvider();
 
-    const address = wallet.address;
-    const message = `Complete profile form for ${selectedPath}, is the message I am signing`;
-    const signature = await provider.request({
-      method: "personal_sign",
-      params: [message, address],
-    });
-
-    console.log("my connected wallet is:", wallet);
-    console.log("my provider is:", provider);
-    console.log("my form values are:", formValues);
-    console.log("my message is:", message);
-    console.log("my signature is:", signature);
+    const signer = await provider.getSigner();
 
     AuthService.completeUserProfile(
-      formValues.givenname,
-      formValues.familyname,
+      formValues.fullName,
       formValues.location,
-      formValues.lga,
-      formValues.phone,
-      formValues.email,
-      signature
+      formValues.country,
+      formValues.phoneNumber,
+      formValues.emailAddress,
+      selectedPath,
+      signer
     );
     // console.log(formValues);
   };
   const onFinishFailed = (errorInfo) => {
+    profileForm.resetFields();
     console.log("Failed:", errorInfo);
   };
 
-  const handleSkip = (path) => {
+  const handleSkip = async (path) => {
     switch (true) {
       case path === "Community":
         router.push("/home?title=Your Proposals");
@@ -58,12 +52,21 @@ export default function PathPage() {
         router.push("/home/dashboard");
         break;
     }
+
+    // note: import authservice and usewallet when using elsewhere
+    // const wallet = ready && wallets[0];
+    // await wallet.switchChain(11155111);
+    // const provider = await wallet.getEthersProvider();
+
+    // const data = await AuthService.getUserProfile(provider);
+    // const firstKey = Object.keys(data)[0];
+    // setName(data[firstKey]);
   };
 
   return (
     <Suspense
       fallback={
-        <div className="w-screen h-screen bg-[#fafafa] text-[#333]">
+        <div className="w-screen h-screen bg-[#fafafa] text-[#38C793]">
           Loading...
         </div>
       }
@@ -76,7 +79,7 @@ export default function PathPage() {
           >
             &lt;-
           </p>
-          <p className={!selectedPath && "text-red-500"}>
+          <p className={!selectedPath ? "text-red-500" : ""}>
             {selectedPath ? selectedPath : "Invalid Selection"}
           </p>
           <p className="px-6"></p>
@@ -85,7 +88,7 @@ export default function PathPage() {
           <h1 className="font-semibold text-xl mb-1">Complete your Profile</h1>
           <p className="text-xs font-light">This step is optional!</p>
         </div>
-        <div className="w-full rounded-3xl bg-white flex flex-col gap-5 px-4 py-6">
+        <div className="w-full rounded-3xl bg-[#fafafa] flex flex-col gap-5 px-4 py-6">
           <Form
             layout="vertical"
             name="profile"
@@ -93,11 +96,12 @@ export default function PathPage() {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             className="w-full"
-            size="large"
+            form={profileForm}
+            // size="large"
           >
             <Form.Item
-              label="Given Name"
-              name="givenname"
+              label="Full Name"
+              name="fullName"
               rules={[
                 {
                   required: true,
@@ -108,44 +112,32 @@ export default function PathPage() {
               <Input placeholder="Enter Given name" />
             </Form.Item>{" "}
             <Form.Item
-              label="Family Name"
-              name="familyname"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your family name!",
-                },
-              ]}
-            >
-              <Input placeholder="Enter Family name" />
-            </Form.Item>{" "}
-            <Form.Item
               label="Location"
               name="location"
               rules={[
                 {
                   required: true,
-                  message: "Please input your city/state/country!",
+                  message: "Please enter your City / State / Country",
                 },
               ]}
             >
-              <Input placeholder="Enter your city/state/country" />
+              <Input placeholder="City / State / Country" />
             </Form.Item>{" "}
             <Form.Item
-              label="Local Government"
-              name="lga"
+              label="Country"
+              name="country"
               rules={[
                 {
                   required: true,
-                  message: "Please input your Local Government!",
+                  message: "Please enter your Country",
                 },
               ]}
             >
-              <Input placeholder="Enter your Local Government" />
+              <Input placeholder="City / State / Country" />
             </Form.Item>{" "}
             <Form.Item
               label="Phone Number"
-              name="phone"
+              name="phoneNumber"
               rules={[
                 {
                   required: true,
@@ -157,7 +149,7 @@ export default function PathPage() {
             </Form.Item>{" "}
             <Form.Item
               label="Email Address"
-              name="email"
+              name="emailAddress"
               rules={[
                 {
                   required: true,
@@ -175,17 +167,6 @@ export default function PathPage() {
                 htmlType="submit"
               >
                 Submit
-              </Button>
-            </Form.Item>
-            <Form.Item>
-              <Button
-                className="border-2 border-[#38C793] w-full text-[#38c793]"
-                size="large"
-                type="default"
-                htmlType="button"
-                onClick={() => handleSkip(selectedPath)}
-              >
-                Skip this step
               </Button>
             </Form.Item>
           </Form>

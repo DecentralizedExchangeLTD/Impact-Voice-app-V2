@@ -4,7 +4,7 @@
 
 body {
   color: #333;
-  background: #bdb8b8;
+  background: #d8d8d8;
   /* background: #f0f0f0; */
 }
 
@@ -12,4 +12,28 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.truncate-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Number of lines of description in DonateCard */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ant-input-search
+  :where(.css-dev-only-do-not-override-djtmh8).ant-input-group
+  .ant-input-affix-wrapper:not(:last-child) {
+  border-start-start-radius: 100px;
+  border-end-start-radius: 100px;
+}
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-input-search
+  > .ant-input-group
+  > .ant-input-group-addon:last-child
+  .ant-input-search-button {
+  border-start-end-radius: 100px;
+  border-end-end-radius: 100px;
+  background-color: #4cc095;
 }

@@ -4,6 +4,7 @@ import "../globals.css";
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { usePrivy } from "@privy-io/react-auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,6 +12,7 @@ export default function ProtectedLayout({ children }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
+  const { logout } = usePrivy();
 
   const handleHamburger = () => {
     setIsOpen(!isOpen);
@@ -18,7 +20,17 @@ export default function ProtectedLayout({ children }) {
 
   const handleNavigation = (link, title) => {
     setIsOpen(false);
-    router.push(`${link}?title=` + title);
+
+    switch (true) {
+      case title === "Logout":
+        logout();
+        router.push(link);
+        break;
+
+      default:
+        router.push(`${link}?title=` + title);
+        break;
+    }
   };
 
   const navLinks = [
@@ -61,19 +73,20 @@ export default function ProtectedLayout({ children }) {
     {
       title: "Logout",
       icon: "/logout.svg",
+      link: "/",
     },
   ];
 
   return (
     <section className={inter.className}>
       <nav
-        className={`w-full fixed top-0 bg-[#ffffff90] backdrop-blur-md ${
+        className={`w-full z-10 fixed top-0 bg-[#ffffff90] backdrop-blur-md ${
           isOpen
             ? "bg-[#fafafa] backdrop-blur-xl rounded-b-3xl"
             : "bg-transparent backdrop-blur-xl"
         }`}
       >
-        <div className="w-full h-20 flex flex-row items-center justify-between px-4 bg-[#ffffff50]">
+        <div className="w-full h-16 flex flex-row items-center justify-between px-4">
           <div className="flex flex-row gap-3 items-center">
             <Image
               src="/logo.png"
