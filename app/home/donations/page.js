@@ -1,11 +1,11 @@
 "use client";
 import { DonationsCard } from "@/app/components/DonationsCard";
 import Search from "antd/es/input/Search";
-// import Image from "next/image";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function DonorPage() {
-  // const remainingVoice = 11;
+  const remainingVoice = 11;
 
   const proposals = [
     {
@@ -56,7 +56,7 @@ export default function DonorPage() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-start gap-4 text-black px-4 pb-10 pt-32">
+    <div className="w-full flex flex-col items-center justify-start gap-4 text-black px-4 pb-10 pt-40">
       <div className="w-full flex flex-col gap-2 fixed top-0 pt-16 px-4 pb-2 bg-[#d8d8d8] shadow-md">
         <div className="w-full">
           <Search
@@ -70,7 +70,7 @@ export default function DonorPage() {
             onChange={handleSearch}
           />
         </div>
-        {/* <div className="w-full flex flex-row items-center gap-2">
+        <div className="w-full flex flex-row items-center gap-2">
           <Image
             src="/thumbprint.svg"
             height={15}
@@ -79,7 +79,7 @@ export default function DonorPage() {
             alt=""
           />
           <p className="font-bold">{remainingVoice} remaining</p>
-        </div> */}
+        </div>
       </div>
       <div className="w-full text-center">
         <h1 className="font-semibold text-xl mb-1">Donate</h1>

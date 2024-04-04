@@ -1,31 +1,76 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Path } from "../components/Path";
+import { AuthService } from "../services/authService";
+import { error } from "../components/Modals";
+import { LoadingScreen } from "../components/LoadingScreen";
 
 const paths = [
   {
     title: "Community",
     image: "/community.jpg",
-    // subtitle: "Your information will not be shared with the",
   },
   {
     title: "Donor",
     image: "/donor.jpg",
-    // subtitle: "Your information will not be shared with the",
   },
   {
     title: "Admin",
     image: "/admin.jpg",
-    // subtitle: "Your information will not be shared with the",
   },
 ];
 
 export default function PathPage() {
+  const [pageLoading, setPageLoading] = useState(true);
   const router = useRouter();
 
   const selectPath = (title) => {
-    router.push("/pathform?selectedPath=" + title);
+    switch (true) {
+      case title === "Admin":
+        return null;
+
+      default:
+        router.push("/pathform?selectedPath=" + title);
+        break;
+    }
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await AuthService.confirmAppwriteAuth();
+        if (response.email) {
+          const getUser = async () => {
+            const emailAddress = await response.email;
+            // TODO: Fix this useless bug
+            const user = await AuthService.findUser(emailAddress);
+            console.log("user:", user);
+            // extract the userType and skip to proposals
+          };
+          getUser();
+        }
+      } catch (e) {
+        console.log("error:", e);
+        error(
+          "Authenticated Failed",
+          "There was a problem verifying your profile",
+          router.push("/")
+        );
+      } finally {
+        setPageLoading(false);
+      }
+    };
+    checkAuth();
+
+    return () => {
+      checkAuth();
+    };
+  }, []);
+
+  if (pageLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="w-full h-full px-4 py-10 flex flex-col items-center gap-10">
@@ -35,7 +80,7 @@ export default function PathPage() {
           Kindly select your path to proceed further!
         </p>
       </div>
-      <div className="w-full rounded-3xl bg-white flex flex-col gap-5 px-4 py-6">
+      <div className="w-full lg:w-screen lg:max-w-[1280px] rounded-3xl bg-white flex flex-col items-center justify-center gap-5 px-4 py-6">
         {paths.map((item, index) => {
           return (
             <Path

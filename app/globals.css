@@ -37,3 +37,68 @@ body {
   border-end-end-radius: 100px;
   background-color: #4cc095;
 }
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-input-filled:focus,
+:where(.css-dev-only-do-not-override-djtmh8).ant-input-filled:focus-within {
+  outline: 0;
+  border-color: #4cc095;
+  background-color: #4cc09549;
+}
+
+.ant-select-focused:where(
+    .css-dev-only-do-not-override-djtmh8
+  ).ant-select-filled:not(.ant-select-disabled):not(
+    .ant-select-customize-input
+  ):not(.ant-pagination-size-changer)
+  .ant-select-selector {
+  background: #4cc09549;
+  border-color: #4cc095;
+  outline: 0;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  background-color: #4cc095;
+}
+
+button:active,
+[type="button"]:active,
+[type="reset"]:active,
+[type="submit"]:active {
+  background-color: #4cc095;
+}
+
+button:hover,
+[type="button"]:hover,
+[type="reset"]:hover,
+[type="submit"]:hover {
+  background-color: #4cc095;
+}
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-btn-primary {
+  background: #4cc095;
+}
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-btn-primary:hover {
+  background: #4cc095;
+}
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-btn-primary:active {
+  background: #4cc095;
+}
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-btn-primary:not(:disabled):not(
+    .ant-btn-disabled
+  ):active {
+  color: #fff;
+  background: #4cc095;
+}
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-btn-primary:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover {
+  color: #fff;
+  background: #4cc095;
+}

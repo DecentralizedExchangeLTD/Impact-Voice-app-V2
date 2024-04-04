@@ -1,12 +1,9 @@
 "use client";
-import { Inter } from "next/font/google";
 import "../globals.css";
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function ProtectedLayout({ children }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,18 +37,14 @@ export default function ProtectedLayout({ children }) {
       link: "/home",
     },
     {
-      title: "Your Grants",
-      icon: "/yourgrants.svg",
-      link: "/home",
-    },
-    {
       title: "Your Proposals",
       icon: "/yourproposals.svg",
       link: "/home",
     },
     {
-      title: "Donate",
-      icon: "/donate.svg",
+      title: "Your Grants",
+      icon: "/yourgrants.svg",
+      link: "/home",
     },
     {
       title: "Awarded Grants",
@@ -59,16 +52,24 @@ export default function ProtectedLayout({ children }) {
       link: "/home",
     },
     {
+      title: "Donate",
+      icon: "/donate.svg",
+      link: "/home/dashboard",
+    },
+    {
       title: "My Cart",
       icon: "/yourcart.svg",
+      link: "/home/dashboard",
     },
     {
       title: "Message",
       icon: "/messages.svg",
+      link: "/home/dashboard",
     },
     {
       title: "Learn More",
       icon: "/learnmore.svg",
+      link: "/home/dashboard",
     },
     {
       title: "Logout",
@@ -78,9 +79,9 @@ export default function ProtectedLayout({ children }) {
   ];
 
   return (
-    <section className={inter.className}>
+    <section className="flex flex-col items-center lg:w-screen">
       <nav
-        className={`w-full z-10 fixed top-0 bg-[#ffffff90] backdrop-blur-md ${
+        className={`w-full flex flex-col lg:w-screen lg:max-w-[1280px] z-10 fixed top-0 bg-[#ffffff90] backdrop-blur-md ${
           isOpen
             ? "bg-[#fafafa] backdrop-blur-xl rounded-b-3xl"
             : "bg-transparent backdrop-blur-xl"
@@ -91,9 +92,9 @@ export default function ProtectedLayout({ children }) {
             <Image
               src="/logo.png"
               alt="impact stream greenpill africa logo"
+              className="w-auto h-auto"
               width={35}
               height={35}
-              className="w-auto h-auto"
             />
             <div className="font-bold text-xl ">Impact Voice</div>
           </div>
@@ -102,9 +103,9 @@ export default function ProtectedLayout({ children }) {
               src={isOpen ? "/close.svg" : "/hamburger.svg"}
               alt="hamburger"
               priority
+              className="w-auto h-auto"
               width={30}
               height={30}
-              className="w-auto h-auto"
             />
           </div>
         </div>
