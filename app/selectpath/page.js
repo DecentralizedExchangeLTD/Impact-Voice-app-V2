@@ -43,9 +43,10 @@ export default function PathPage() {
         if (response.email) {
           const getUser = async () => {
             const emailAddress = await response.email;
+            return emailAddress;
             // TODO: Fix this useless bug
-            const user = await AuthService.findUser(emailAddress);
-            console.log("user:", user);
+            // const user = await AuthService.findUser(emailAddress);
+            // console.log("user:", user);
             // extract the userType and skip to proposals
           };
           getUser();

@@ -44,19 +44,11 @@ export default function AuthPage() {
             <br />
             Voice
           </h1>
-<<<<<<< HEAD
           <div className="w-[90%] rounded-t-3xl bg-white h-96 flex flex-col items-center justify-center px-5 gap-5 text-center text-xs md:text-base lg:text-md">
             <p className="w-5/6 text-sm md:text-base lg:text-lg">
               To sign-in enter your phone number beginning with country code, or
               a valid Email address, then enter the OTP you receive from Impact
               Voice when asked to do so.
-=======
-          <div className="w-[90%] rounded-t-3xl bg-white h-96 flex flex-col items-center justify-center px-5 gap-5 text-center text-xs">
-            <p className="w-5/6 text-sm">
-              To sign-in enter your phone number beginning with country code
-              228, then check for a message from Impact Voice (Sandbox) and
-              enter your code in the pop-up.
->>>>>>> 8897477a4ba1e98b957a6d6a23c0a8f52a66727f
             </p>
             <Button
               loading={disableLogin}
