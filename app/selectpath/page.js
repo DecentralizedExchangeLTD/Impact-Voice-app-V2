@@ -50,13 +50,15 @@ export default function PathPage() {
             // extract the userType and skip to proposals
           };
           getUser();
+        } else {
+          return;
         }
       } catch (e) {
         console.log("error:", e);
         error(
           "Authenticated Failed",
           "There was a problem verifying your profile",
-          router.push("/")
+          () => null
         );
       } finally {
         setPageLoading(false);
