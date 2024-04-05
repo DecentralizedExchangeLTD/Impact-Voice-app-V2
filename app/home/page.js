@@ -7,6 +7,7 @@ import { ProposalService } from "../services/proposalService";
 import { AuthService } from "../services/authService";
 import { error } from "../components/Modals";
 import { LoadingScreen } from "../components/LoadingScreen";
+import { useData } from "../hooks/ProposalProvider";
 
 const { Search } = Input;
 
@@ -19,8 +20,18 @@ export default function PathPage() {
   const searchParams = useSearchParams();
   const title = searchParams.get("title");
 
+  const {
+    user,
+    fetchUser,
+    proposal,
+    fetchProposal,
+    proposals,
+    fetchProposals,
+  } = useData();
+
   useEffect(() => {
-    // TODO: Move this to custom hook to get user info
+    // TODO: Move this to useData() custom hook
+    console.log(user);
     try {
       const fetchUser = async () => {
         const user = await AuthService.confirmAppwriteAuth();
@@ -31,6 +42,7 @@ export default function PathPage() {
         const response = await ProposalService.fetchProposals();
         setData(response.documents);
         setFilteredProposals(response.documents);
+        console.log(response.documents);
       };
 
       fetchAttestations();
@@ -105,6 +117,7 @@ export default function PathPage() {
                   voices={
                     title === "Your Voice" && item.voices ? item.voices : ""
                   }
+                  proposalID={item.proposalUID}
                 />
               );
             })

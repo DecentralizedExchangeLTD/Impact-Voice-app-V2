@@ -1,5 +1,7 @@
+"use client";
 import Image from "next/image";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 export const ProposalCard = ({
   title,
@@ -8,9 +10,19 @@ export const ProposalCard = ({
   description,
   owner,
   canvote,
+  proposalID,
 }) => {
+  const router = useRouter();
+  const handleClick = (id) => {
+    // router.push("/home/proposal?proposalID=" + id);
+    return id;
+  };
+
   return (
-    <div className="w-full flex flex-col p-4 rounded-2xl bg-[#fafafa] gap-2">
+    <div
+      onClick={() => handleClick(proposalID)}
+      className="w-full flex flex-col p-4 rounded-2xl bg-[#fafafa] gap-2 hover:bg-[#4cc0953a] active:scale-105 origin-center"
+    >
       <div className="flex flex-row items-center justify-between">
         <h1 className="font-semibold truncate">{title}</h1>
         <div className="flex flex-row gap-2 items-center text-xs font-semibold">
