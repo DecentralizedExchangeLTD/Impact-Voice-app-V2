@@ -37,6 +37,15 @@ export default function PathPage() {
         provider
       );
 
+      if (!profileAttestationUID) {
+        error(
+          "Profile Creation failed",
+          "There was a problem creating your profile, please try again!",
+          () => router.push("/")
+        );
+        return;
+      }
+
       if (profileAttestationUID) {
         const signUpResponse = await AuthService.createAppwriteAccount(
           formValues.emailAddress,
@@ -46,13 +55,13 @@ export default function PathPage() {
 
         console.log("appwrite acct signup:", signUpResponse);
 
-        if (signUpResponse.email === formValues.emailAddress) {
+        if (signUpResponse?.email === formValues.emailAddress) {
           const signInResponse = await AuthService.loginAppwriteAccount(
             formValues.emailAddress,
             "cookandeat"
           );
 
-          if (signInResponse.userId) {
+          if (signInResponse?.userId) {
             const appwriteResponse = await AuthService.signUp(
               formValues.fullName,
               formValues.location,
@@ -79,12 +88,6 @@ export default function PathPage() {
         return signUpResponse;
       }
     } catch (e) {
-      e &&
-        error(
-          "Profile Creation failed",
-          "There was a problem creating your profile, please try again!",
-          () => router.push("/")
-        );
       console.log("Error completing profile:", e);
     } finally {
       setLoading(false);
@@ -114,18 +117,18 @@ export default function PathPage() {
     const checkAuth = async () => {
       try {
         const response = await AuthService.confirmAppwriteAuth();
-        if (response.$id) {
+        if (!response?.$id) {
+          error(
+            "Authenticated Failed",
+            "There was a problem verifying your profile",
+            () => null
+          );
+        }
+        if (response?.$id) {
           handleSkip(selectedPath);
-        } else {
-          return;
         }
       } catch (e) {
         console.log("error:", e);
-        error(
-          "Authenticated Failed",
-          "There was a problem verifying your profile",
-          () => null
-        );
       } finally {
         setPageLoading(false);
       }

@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <title>Impact Voice</title>
-        <meta name="description" content="A brief description of your page" />
+        <meta name="description" content="Let your voice be heard" />
         <meta name="keywords" content="impact, voice, proposals" />
         <meta name="author" content="Chuku Success" />
       </head>

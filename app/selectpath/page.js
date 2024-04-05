@@ -40,35 +40,34 @@ export default function PathPage() {
     const checkAuth = async () => {
       try {
         const response = await AuthService.confirmAppwriteAuth();
-        if (response.email) {
-          const getUser = async () => {
-            const emailAddress = await response.email;
-            return emailAddress;
-            // TODO: Fix this useless bug
-            // const user = await AuthService.findUser(emailAddress);
-            // console.log("user:", user);
-            // extract the userType and skip to proposals
-          };
-          getUser();
-        } else {
-          return;
+        if (!response.email) {
+          error(
+            "Authenticated Failed",
+            "There was a problem verifying your profile",
+            () => null
+          );
         }
+        console.log("response:", response);
+        // if (response.email) {
+        // const getUser = async () => {
+        // const emailAddress = response.email;
+        // return emailAddress;
+        // TODO: Fix this useless bug
+        // const user = await AuthService.findUser(emailAddress);
+        // console.log("user:", user);
+        // extract the userType and skip to proposals
+        // };
+        // getUser();
+        // } else {
+        // return;
+        // }
       } catch (e) {
         console.log("error:", e);
-        error(
-          "Authenticated Failed",
-          "There was a problem verifying your profile",
-          () => null
-        );
       } finally {
         setPageLoading(false);
       }
     };
     checkAuth();
-
-    return () => {
-      checkAuth();
-    };
   }, []);
 
   if (pageLoading) {
