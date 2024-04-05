@@ -116,13 +116,15 @@ export default function PathPage() {
         const response = await AuthService.confirmAppwriteAuth();
         if (response.$id) {
           handleSkip(selectedPath);
+        } else {
+          return;
         }
       } catch (e) {
         console.log("error:", e);
         error(
           "Authenticated Failed",
           "There was a problem verifying your profile",
-          router.push("/")
+          () => null
         );
       } finally {
         setPageLoading(false);
