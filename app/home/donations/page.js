@@ -56,45 +56,48 @@ export default function DonorPage() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-start gap-4 text-black px-4 pb-10 pt-40">
-      <div className="w-full flex flex-col gap-2 fixed top-0 pt-16 px-4 pb-2 bg-[#d8d8d8] shadow-md">
-        <div className="w-full">
-          <Search
-            placeholder="Search for a proposal"
-            enterButton
-            allowClear
-            size="large"
-            onSearch={() => {
-              return;
-            }}
-            onChange={handleSearch}
-          />
-        </div>
-        <div className="w-full flex flex-row items-center gap-2">
-          <Image
-            src="/thumbprint.svg"
-            height={15}
-            width={15}
-            className="bg-white rounded-full p-1 w-7 h-7"
-            alt=""
-          />
-          <p className="font-bold">{remainingVoice} remaining</p>
-        </div>
-      </div>
-      <div className="w-full text-center">
-        <h1 className="font-semibold text-xl mb-1">Donate</h1>
-      </div>
-      {filteredProposals.map((item, index) => {
-        return (
-          <DonationsCard
-            key={index}
-            title={item.title}
-            description={item.description}
-            voices={item.voices}
-            owner={item.owner}
-          />
-        );
-      })}
+    // <div className="w-full flex flex-col items-center justify-start gap-4 text-black px-4 pb-10 pt-40">
+    //   <div className="w-full flex flex-col gap-2 fixed top-0 pt-16 px-4 pb-2 bg-[#d8d8d8] shadow-md">
+    //     <div className="w-full">
+    //       <Search
+    //         placeholder="Search for a proposal"
+    //         enterButton
+    //         allowClear
+    //         size="large"
+    //         onSearch={() => {
+    //           return;
+    //         }}
+    //         onChange={handleSearch}
+    //       />
+    //     </div>
+    //     <div className="w-full flex flex-row items-center gap-2">
+    //       <Image
+    //         src="/thumbprint.svg"
+    //         height={15}
+    //         width={15}
+    //         className="bg-white rounded-full p-1 w-7 h-7"
+    //         alt=""
+    //       />
+    //       <p className="font-bold">{remainingVoice} remaining</p>
+    //     </div>
+    //   </div>
+    //   <div className="w-full text-center">
+    //     <h1 className="font-semibold text-xl mb-1">Donate</h1>
+    //   </div>
+    //   {filteredProposals.map((item, index) => {
+    //     return (
+    //       <DonationsCard
+    //         key={index}
+    //         title={item.title}
+    //         description={item.description}
+    //         voices={item.voices}
+    //         owner={item.owner}
+    //       />
+    //     );
+    //   })}
+    // </div>
+    <div className="w-full h-screen flex flex-col items-center justify-center text-black">
+      coming soon
     </div>
   );
 }

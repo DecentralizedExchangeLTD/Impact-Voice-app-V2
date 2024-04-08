@@ -17,10 +17,10 @@ export default function Proposal() {
   const proposalID = searchParams.get("proposalID");
   const { ready, wallets } = useWallets();
   const wallet = ready && wallets[0];
-  const provider = wallet && wallet.getEthersProvider();
 
   useEffect(() => {
     const getProposal = async () => {
+      const provider = await wallet.getEthersProvider();
       try {
         setPageLoading(true);
         const response = await ProposalService.getProposal(

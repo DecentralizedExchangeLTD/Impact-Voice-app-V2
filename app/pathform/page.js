@@ -20,8 +20,8 @@ export default function PathPage() {
   const onFinish = async () => {
     setLoading(true);
     // await wallet.switchChain(11155111);
-    const formValues = await profileForm.validateFields();
     const provider = await wallet.getEthersProvider();
+    const formValues = await profileForm.validateFields();
 
     const signer = provider.getSigner();
 
@@ -253,12 +253,7 @@ export default function PathPage() {
             </Form.Item>
           </Form>
         </div>
-        <div className="w-full flex flex-col items-center pb-4">
-          <p className="text-center w-5/6 text-xs font-light">
-            Your information will not be shared with the public and will only be
-            used for identification purposes and to contact you if necessary.
-          </p>
-        </div>
+
         <p className="pb-4 font-extralight text-xs">
           powered by <b>impact stream</b>
         </p>
