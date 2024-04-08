@@ -46,6 +46,16 @@ export class AuthService {
     return response;
   }
 
+  // list all users
+  static async listUsers() {
+    const response = await databasesClient.listDocuments(
+      appwriteDB,
+      usersCollection
+      // queryParam.limit(99)
+    );
+    return response;
+  }
+
   // send profile attestation to appwrite
   static async signUp(
     fullName,

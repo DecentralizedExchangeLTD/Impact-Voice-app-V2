@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
+import { AuthService } from "../services/authService";
 
 export default function ProtectedLayout({ children }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function ProtectedLayout({ children }) {
     switch (true) {
       case title === "Logout":
         logout();
+        AuthService.appwriteLogout();
         router.push(link);
         break;
 

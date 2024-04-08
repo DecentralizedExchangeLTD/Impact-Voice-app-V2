@@ -16,6 +16,7 @@ import {
   proposalsCollection,
   generateID,
   databasesClient,
+  queryParam,
 } from "./api";
 import { ethers } from "ethers";
 import { createSmartAccountClient } from "@biconomy/account";
@@ -63,6 +64,7 @@ export class ProposalService {
     const response = await databasesClient.listDocuments(
       appwriteDB,
       proposalsCollection
+      // [queryParam.limit(99)]
     );
     return response;
   }
@@ -188,31 +190,36 @@ export class ProposalService {
   }
 
   // get and decode proposal from EAS
-  static async getProposals(provider) {
-    const schemaRegistryContractAddress =
-      "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0"; // Sepolia 0.26
-    const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
-    schemaRegistry.connect(provider);
+  static async getProposal(provider, attestationUID) {
+    const eas = new EAS(easContractAddress);
+    eas.connect(provider);
 
-    const schemaUID = "schema uid here";
+    const attestation = await eas.getAttestation(attestationUID);
 
-    const schemaRecord = await schemaRegistry.getSchema({ uid: schemaUID });
+    console.log("fetched attestation:", attestation);
 
-    console.log("schema record:", schemaRecord);
+    const encodedData = attestation.data;
 
-    return schemaRecord;
+    const types = [
+      "string", // title
+      "string", // summary
+      "string", // problem
+      "string", // solution
+      "string", // specifications
+      "string[]", // steps
+      "string[]", // collaborators
+      "string", // timeline
+      "string", // budget
+      "string", // location
+      "string[]", // milestone
+    ];
 
-    // const encodedData = attestation.data;
+    const abiCoder = await ethers.AbiCoder.defaultAbiCoder();
 
-    // const types = ["string", "string", "string", "uint64", "string", "string"];
+    const decodedData = abiCoder.decode(types, encodedData);
 
-    // const abiCoder = await ethers.AbiCoder.defaultAbiCoder();
+    console.log("decoded data:", decodedData);
 
-    // // Decode the data
-    // const decodedData = abiCoder.decode(types, encodedData);
-
-    // console.log("decoded data:", decodedData);
-
-    // return decodedData;
+    return decodedData;
   }
 }

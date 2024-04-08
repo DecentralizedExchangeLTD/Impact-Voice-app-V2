@@ -8,11 +8,14 @@ export const Path = ({ title, subtitle, handleClick, image }) => {
       className="w-full md:w-fit lg:w-fit bg-[#ebebeb] rounded-2xl flex flex-col items-center justify-center active:border-2 border-green-500 gap-2 p-2"
     >
       {/* <Image src="/path.svg" alt={title} width={30} height={30} /> */}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col items-center relative w-full">
         <span className="font-semibold text-md active:text-green-500">
           {title}
         </span>
-        <span className="font-light text-xs"> {subtitle} </span>
+        <span className="text-xs text-center p-2 absolute top-20 text-white font-semibold z-10 bg-[#00000090] w-full">
+          {" "}
+          {subtitle}{" "}
+        </span>
       </div>
       <Image
         src={image}

@@ -9,14 +9,18 @@ import { LoadingScreen } from "../components/LoadingScreen";
 const paths = [
   {
     title: "Community",
+    subtitle:
+      "Be a community member, voice out your problems, make proposals, help other members.",
     image: "/community.jpg",
   },
   {
     title: "Donor",
+    subtitle: "For making donations to proposals you relate with.",
     image: "/donor.jpg",
   },
   {
     title: "Admin",
+    subtitle: "Manage grant rounds",
     image: "/admin.jpg",
   },
 ];

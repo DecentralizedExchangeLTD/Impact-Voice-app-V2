@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Form, Input, Select, InputNumber, Space, Card } from "antd";
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
@@ -7,69 +7,71 @@ import { DownOutlined } from "@ant-design/icons";
 import { ProposalService } from "../services/proposalService";
 import { useWallets } from "@privy-io/react-auth";
 import { success, error } from "../components/Modals";
+import { AuthService } from "../services/authService";
 
 const { TextArea } = Input;
 const MAX_COUNT = 3;
 
-const users = [
-  {
-    label: "Community",
-    title: "community",
-    options: [
-      {
-        value: "Ava Swift",
-        label: "Ava Swift",
-      },
-      {
-        value: "Cole Reed",
-        label: "Cole Reed",
-      },
-    ],
-  },
-  {
-    label: "Donor",
-    title: "donor",
-    options: [
-      {
-        value: "Mia Blake",
-        label: "Mia Blake",
-      },
-      {
-        value: "Jake Stone",
-        label: "Jake Stone",
-      },
-      {
-        value: "Lily Lane",
-        label: "Lily Lane",
-      },
-    ],
-  },
-  {
-    label: "Admin",
-    title: "admin",
-    options: [
-      {
-        value: "Izzy",
-        label: "izzy",
-      },
-    ],
-  },
-];
-
 export default function ProposalForm() {
-  const [value, setValue] = useState(["Ava Swift"]);
+  const [value, setValue] = useState(null);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [proposalForm] = Form.useForm();
   const router = useRouter();
   const { ready, wallets } = useWallets();
 
+  useEffect(() => {
+    const getUsers = async () => {
+      const response = await AuthService.listUsers();
+      const transformedUsers = transformUsers(response.documents);
+      setUsers(transformedUsers);
+    };
+    getUsers();
+  }, []);
+
+  const transformUsers = (usersArray) => {
+    // Helper function to capitalize the first letter of each word
+    const capitalizeWords = (str) =>
+      str.toLowerCase().replace(/\b(\w)/g, (s) => s.toUpperCase());
+
+    // Helper function to convert string to camelCase
+    const toCamelCase = (str) =>
+      str
+        .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) =>
+          index === 0 ? word.toLowerCase() : word.toUpperCase()
+        )
+        .replace(/\s+/g, "");
+
+    // Transform the structure
+    const groupedUsers = usersArray.reduce((acc, user) => {
+      const userType = user.userType.toLowerCase(); // Ensuring case-insensitivity for grouping
+      const label = capitalizeWords(user.fullName);
+      const value = toCamelCase(user.fullName);
+
+      if (!acc[userType]) {
+        acc[userType] = {
+          label: capitalizeWords(userType),
+          title: userType,
+          options: [],
+        };
+      }
+
+      acc[userType].options.push({ value, label });
+
+      return acc;
+    }, {});
+
+    // Convert the object back into an array
+    return Object.values(groupedUsers);
+  };
+
   const onFinish = async () => {
     setLoading(true);
     const formValues = await proposalForm.validateFields();
     const wallet = ready && wallets[0];
-    await wallet.switchChain(11155111);
+    // await wallet.switchChain(11155111);
     const provider = await wallet.getEthersProvider();
-    const signer = await provider.getSigner();
+    const signer = provider.getSigner();
 
     if (
       formValues.hasOwnProperty("budget") &&
@@ -151,7 +153,7 @@ export default function ProposalForm() {
   const suffix = (
     <>
       <span>
-        {value.length} / {MAX_COUNT}
+        {value?.length} / {MAX_COUNT}
       </span>
       <DownOutlined />
     </>

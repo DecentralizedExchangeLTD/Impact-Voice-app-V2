@@ -1,7 +1,7 @@
 "use client";
 import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button, Input } from "antd";
+import { Button, Input, Pagination } from "antd";
 import { ProposalCard } from "../components/ProposalCard";
 import { ProposalService } from "../services/proposalService";
 import { AuthService } from "../services/authService";
@@ -14,11 +14,13 @@ const { Search } = Input;
 export default function PathPage() {
   const [pageLoading, setPageLoading] = useState(true);
   const [name, setName] = useState("user ID");
-  const [data, setData] = useState([1]);
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
   const [filteredProposals, setFilteredProposals] = useState([]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const title = searchParams.get("title");
+  const pageSize = 8;
 
   const {
     user,
@@ -66,6 +68,18 @@ export default function PathPage() {
     setFilteredProposals(filtered);
   };
 
+  const handlePagination = (page) => {
+    setPage(page);
+    console.log("current page:", page);
+  };
+
+  const indexOfLastItem = page * pageSize;
+  const indexOfFirstItem = indexOfLastItem - pageSize;
+  const currentItems = filteredProposals.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
   if (pageLoading) {
     return <LoadingScreen />;
   }
@@ -105,7 +119,7 @@ export default function PathPage() {
               There are no proposals to display currently.
             </div>
           ) : (
-            filteredProposals.map((item, index) => {
+            currentItems.map((item, index) => {
               return (
                 <ProposalCard
                   key={index}
@@ -123,6 +137,14 @@ export default function PathPage() {
             })
           )}
         </div>
+        <Pagination
+          defaultPageSize={pageSize}
+          hideOnSinglePage={true}
+          current={page}
+          onChange={handlePagination}
+          defaultCurrent={1}
+          total={filteredProposals?.length}
+        />
         {title === "Your Proposals" && (
           <div className="fixed bottom-0 py-3 font-extralight text-xs bg-[#ffffff90] backdrop-blur-2xl w-full lg:w-screen lg:max-w-[1280px] flex flex-col items-center gap-2">
             <div className="w-5/6 lg:w-1/3">
