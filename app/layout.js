@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { PrivyProvider } from "@privy-io/react-auth";
 import { DataProvider } from "./hooks/ProposalProvider";
 import { appID } from "./services/api";
-import { optimismSepolia } from "viem/chains"; // no etherium sepolia which is our chain
+import { optimismSepolia, sepolia } from "viem/chains"; // no etherium sepolia which is our chain
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,7 +31,6 @@ export default function RootLayout({ children }) {
                 createOnLogin: "users-without-wallets",
               },
               loginMethods: ["email", "wallet", "google", "sms"],
-              defaultChain: optimismSepolia,
             }}
           >
             {children}

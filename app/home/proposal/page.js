@@ -1,17 +1,14 @@
 "use client";
 import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button, Input } from "antd";
-import { ProposalCard } from "@/app/components/ProposalCard";
 import { ProposalService } from "@/app/services/proposalService";
-import { AuthService } from "@/app/services/authService";
 import { useWallets } from "@privy-io/react-auth";
 import { error } from "@/app/components/Modals";
 import { LoadingScreen } from "@/app/components/LoadingScreen";
 
 export default function Proposal() {
   const [pageLoading, setPageLoading] = useState(false);
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const proposalID = searchParams.get("proposalID");
@@ -28,6 +25,13 @@ export default function Proposal() {
           proposalID
         );
         setData(response);
+        if (!response) {
+          error(
+            "Network Error",
+            "We could not get the details of this attestation for now. Please try again!",
+            () => router.back()
+          );
+        }
       } catch (e) {
         console.log("error getting proposal:", e);
       } finally {
@@ -79,16 +83,21 @@ export default function Proposal() {
           </ul>
 
           <ul>
-            <strong>Steps to Implement:</strong> {data["5"]}
+            <strong>Steps to Implement:</strong>{" "}
+            {data["5"]?.map((item, index) => (
+              <li className="mb-2" key={index}>
+                {index + 1}. {item}
+              </li>
+            ))}
           </ul>
 
           <ul>
             <strong>Collaborators:</strong>{" "}
-            {data["6"]["0"] ? data["6"]["0"] : ""}
-            {", "}
-            {data["6"]["1"] ? data["6"]["1"] : ""}
-            {", "}
-            {data["6"]["2"] ? data["6"]["2"] : ""}
+            {data["6"]?.map((item, index) => (
+              <li className="mb-1" key={index}>
+                {index + 1}. {item}
+              </li>
+            ))}
           </ul>
 
           <p>
@@ -96,7 +105,15 @@ export default function Proposal() {
           </p>
 
           <ul>
-            <strong>Milestones:</strong> {data["10"]}
+            <strong>Milestones:</strong>{" "}
+            {data["10"]?.map((item, index) => (
+              <li className="mb-2" key={index}>
+                {index + 1}.{" "}
+                {item.split("BREAKPOINT").map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </li>
+            ))}
           </ul>
 
           <p>
