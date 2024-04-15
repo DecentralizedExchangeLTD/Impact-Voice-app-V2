@@ -15,6 +15,7 @@ const MAX_COUNT = 3;
 export default function ProposalForm() {
   const [value, setValue] = useState(null);
   const [users, setUsers] = useState([]);
+  const [creator, setCreator] = useState("");
   const [loading, setLoading] = useState(false);
   const [proposalForm] = Form.useForm();
   const router = useRouter();
@@ -26,6 +27,11 @@ export default function ProposalForm() {
       const transformedUsers = transformUsers(response.documents);
       setUsers(transformedUsers);
     };
+    const getUser = async () => {
+      const response = await AuthService.confirmAppwriteAuth();
+      setCreator(response.name);
+    };
+    getUser();
     getUsers();
   }, []);
 
@@ -69,7 +75,7 @@ export default function ProposalForm() {
     setLoading(true);
     const formValues = await proposalForm.validateFields();
     const wallet = ready && wallets[0];
-    await wallet.switchChain(11155111);
+    await wallet.switchChain(10);
     const provider = await wallet.getEthersProvider();
     const signer = provider.getSigner();
 
@@ -106,6 +112,7 @@ export default function ProposalForm() {
         formValues.budget,
         formValues.location,
         formValues.milestones,
+        creator,
         provider,
         signer
       );
@@ -123,7 +130,8 @@ export default function ProposalForm() {
           formValues.budget,
           formValues.location,
           formValues.milestones,
-          proposalUID
+          proposalUID,
+          creator
         );
         console.log("appwrite res:", appwriteResponse);
         appwriteResponse &&

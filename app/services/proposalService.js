@@ -35,7 +35,8 @@ export class ProposalService {
     budget,
     location,
     milestones,
-    proposalUID
+    proposalUID,
+    creator
   ) {
     const response = await databasesClient.createDocument(
       appwriteDB,
@@ -54,6 +55,7 @@ export class ProposalService {
         location,
         milestones,
         proposalUID,
+        creator,
       }
     );
     return response;
@@ -63,8 +65,8 @@ export class ProposalService {
   static async fetchProposals() {
     const response = await databasesClient.listDocuments(
       appwriteDB,
-      proposalsCollection
-      // [queryParam.limit(99)]
+      proposalsCollection,
+      [queryParam.limit(99)]
     );
     return response;
   }
@@ -82,7 +84,7 @@ export class ProposalService {
     budget,
     location,
     milestones,
-    // creator,
+    creator,
     // wholePropsal,
     provider,
     signer
@@ -99,7 +101,7 @@ export class ProposalService {
 
     const smartAccount = await createSmartAccountClient({
       signer: signer,
-      chainId: 11155111,
+      chainId: 10,
       bundlerUrl: bundlerUrl,
       biconomyPaymasterApiKey: biconomyPaymasterKey,
       rpcUrl: rpcUrl,
@@ -115,7 +117,7 @@ export class ProposalService {
     await eas.connect(signer);
 
     const proposalSchemaEncoder = new SchemaEncoder(
-      "string title,string summary,string problem,string solution,string specifications,string[] steps,string[] collaborators,string timeline,string budget,string location,string[] milestone"
+      "string title,string summary,string problem,string solution,string specifications,string[] steps,string[] collaborators,string timeline,string budget,string location,string[] milestone,string creator"
     );
 
     const encodedData = proposalSchemaEncoder.encodeData([
@@ -130,6 +132,7 @@ export class ProposalService {
       { name: "budget", value: budget, type: "string" },
       { name: "location", value: location, type: "string" },
       { name: "milestone", value: milestones, type: "string[]" },
+      { name: "creator", value: creator, type: "string" },
     ]);
 
     // const transaction = await eas.attest({
@@ -157,7 +160,7 @@ export class ProposalService {
       data: {
         recipient: adminWallet,
         expirationTime: 0,
-        revocable: false,
+        revocable: true,
         data: encodedData,
         refUID:
           "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -212,14 +215,19 @@ export class ProposalService {
       "string", // budget
       "string", // location
       "string[]", // milestone
+      "string", // creator
     ];
 
     const abiCoder = await ethers.AbiCoder.defaultAbiCoder();
 
-    const decodedData = abiCoder.decode(types, encodedData);
+    try {
+      const decodedData = abiCoder.decode(types, encodedData);
 
-    console.log("decoded data:", decodedData);
+      console.log("decoded data:", decodedData);
 
-    return decodedData;
+      return decodedData;
+    } catch (error) {
+      console.log("error decoding data:", error);
+    }
   }
 }

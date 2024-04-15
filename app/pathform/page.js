@@ -19,7 +19,7 @@ export default function PathPage() {
 
   const onFinish = async () => {
     setLoading(true);
-    await wallet.switchChain(11155111);
+    await wallet.switchChain(10);
     const provider = await wallet.getEthersProvider();
     const formValues = await profileForm.validateFields();
 

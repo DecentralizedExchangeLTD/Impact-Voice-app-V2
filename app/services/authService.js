@@ -123,7 +123,7 @@ export class AuthService {
 
     const smartAccount = await createSmartAccountClient({
       signer: signer,
-      chainId: 11155111,
+      chainId: 10,
       bundlerUrl: bundlerUrl,
       biconomyPaymasterApiKey: biconomyPaymasterKey,
       rpcUrl: rpcUrl,

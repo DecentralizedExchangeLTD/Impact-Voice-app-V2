@@ -126,7 +126,7 @@ export default function PathPage() {
                   title={item.title}
                   description={item.summary}
                   location={item.location}
-                  owner={item.owner ? item.owner : "anonymous"}
+                  owner={item.creator ? item.creator : "anonymous"}
                   canvote={title === "Your Voice" ? "/thumbprint.svg" : ""}
                   voices={
                     title === "Your Voice" && item.voices ? item.voices : ""

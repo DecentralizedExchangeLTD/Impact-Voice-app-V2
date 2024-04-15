@@ -14,7 +14,7 @@ export const ProposalCard = ({
 }) => {
   const router = useRouter();
   const handleClick = (id) => {
-    router.push("/home/proposal?proposalID=" + id);
+    // router.push("/home/proposal?proposalID=" + id);
     return id;
   };
 
