@@ -75,7 +75,7 @@ export default function ProposalForm() {
     setLoading(true);
     const formValues = await proposalForm.validateFields();
     const wallet = ready && wallets[0];
-    await wallet.switchChain(10);
+    // await wallet.switchChain(10);
     const provider = await wallet.getEthersProvider();
     const signer = provider.getSigner();
 
