@@ -133,7 +133,7 @@ export default function PathPage() {
 
       console.log("appwrite acct signup:", signUpResponse);
 
-      if (signUpResponse.email !== formValues.emailAddress) {
+      if (!signUpResponse.email) {
         error(
           "Profile Creation failed",
           "There was a problem creating your profile, please try again!",
