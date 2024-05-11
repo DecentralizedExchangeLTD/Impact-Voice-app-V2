@@ -12,7 +12,7 @@ export const info = (title, content, handleOk) => {
       </div>
     ),
     onOk: handleOk,
-    centered,
+    centered: true,
   });
 };
 
@@ -21,7 +21,7 @@ export const success = (title, content, handleOk) => {
     title: title,
     content: content,
     onOk: handleOk,
-    centered,
+    centered: true,
   });
 };
 
@@ -30,7 +30,7 @@ export const error = (title, content, handleOk) => {
     title: title,
     content: content,
     onOk: handleOk,
-    centered,
+    centered: true,
   });
 };
 
@@ -39,6 +39,6 @@ export const warning = (title, content, handleOk) => {
     title: title,
     content: content,
     onOk: handleOk,
-    centered,
+    centered: true,
   });
 };
