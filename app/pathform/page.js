@@ -17,11 +17,90 @@ export default function PathPage() {
   const { wallets } = useWallets();
   const wallet = wallets[0];
 
+  // const onFinish = async () => {
+  //   setLoading(true);
+
+  //   try {
+  //     // await wallet.switchChain(10);
+  //     const provider = await wallet?.getEthersProvider();
+  //     const formValues = await profileForm.validateFields();
+  //     const signer = provider.getSigner();
+
+  //     const profileAttestationUID = await AuthService.completeUserProfile(
+  //       formValues.fullName,
+  //       formValues.location,
+  //       formValues.country,
+  //       formValues.phoneNumber,
+  //       formValues.emailAddress,
+  //       selectedPath,
+  //       signer,
+  //       provider
+  //     );
+
+  //     if (!profileAttestationUID) {
+  //       error(
+  //         "Profile Creation failed",
+  //         "There was a problem creating your profile, please try again!",
+  //         () => router.push("/")
+  //       );
+  //       return;
+  //     }
+
+  //     if (profileAttestationUID) {
+  //       const signUpResponse = await AuthService.createAppwriteAccount(
+  //         formValues.emailAddress,
+  //         "cookandeat",
+  //         formValues.fullName
+  //       );
+
+  //       console.log("appwrite acct signup:", signUpResponse);
+
+  //       if (
+  //         signUpResponse &&
+  //         signUpResponse.email === formValues.emailAddress
+  //       ) {
+  //         const signInResponse = await AuthService.loginAppwriteAccount(
+  //           formValues.emailAddress,
+  //           "cookandeat"
+  //         );
+
+  //         if (signInResponse?.userId) {
+  //           const appwriteResponse = await AuthService.signUp(
+  //             formValues.fullName,
+  //             formValues.location,
+  //             formValues.country,
+  //             formValues.phoneNumber,
+  //             formValues.emailAddress,
+  //             selectedPath,
+  //             profileAttestationUID
+  //           );
+  //           console.log("appwrite res:", appwriteResponse);
+
+  //           appwriteResponse &&
+  //             success(
+  //               "Profile Created",
+  //               "Your profile has been created successfully",
+  //               () => handleSkip(selectedPath)
+  //             );
+  //         }
+
+  //         console.log("signin res:", signInResponse);
+  //         return signInResponse;
+  //       }
+
+  //       return signUpResponse;
+  //     }
+  //   } catch (e) {
+  //     console.log("Error completing profile:", e);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const onFinish = async () => {
     setLoading(true);
 
     try {
-      // await wallet.switchChain(10);
       const provider = await wallet?.getEthersProvider();
       const formValues = await profileForm.validateFields();
       const signer = provider.getSigner();
@@ -46,53 +125,71 @@ export default function PathPage() {
         return;
       }
 
-      if (profileAttestationUID) {
-        const signUpResponse = await AuthService.createAppwriteAccount(
-          formValues.emailAddress,
-          "cookandeat",
-          formValues.fullName
+      const signUpResponse = await AuthService.createAppwriteAccount(
+        formValues.emailAddress,
+        "cookandeat",
+        formValues.fullName
+      );
+
+      console.log("appwrite acct signup:", signUpResponse);
+
+      if (signUpResponse.email !== formValues.emailAddress) {
+        error(
+          "Profile Creation failed",
+          "There was a problem creating your profile, please try again!",
+          () => router.push("/")
         );
-
-        console.log("appwrite acct signup:", signUpResponse);
-
-        if (signUpResponse?.email === formValues.emailAddress) {
-          const signInResponse = await AuthService.loginAppwriteAccount(
-            formValues.emailAddress,
-            "cookandeat"
-          );
-
-          if (signInResponse?.userId) {
-            const appwriteResponse = await AuthService.signUp(
-              formValues.fullName,
-              formValues.location,
-              formValues.country,
-              formValues.phoneNumber,
-              formValues.emailAddress,
-              selectedPath,
-              profileAttestationUID
-            );
-            console.log("appwrite res:", appwriteResponse);
-
-            appwriteResponse &&
-              success(
-                "Profile Created",
-                "Your profile has been created successfully",
-                () => handleSkip(selectedPath)
-              );
-          }
-
-          console.log("signin res:", signInResponse);
-          return signInResponse;
-        }
-
-        return signUpResponse;
+        return signUpResponse; // Early return if email doesn't match
       }
+
+      const signInResponse = await AuthService.loginAppwriteAccount(
+        formValues.emailAddress,
+        "cookandeat"
+      );
+
+      if (!signInResponse?.userId) {
+        error(
+          "Profile Creation failed",
+          "There was a problem creating your profile, please try again!",
+          () => router.push("/")
+        );
+        return signInResponse; // Early return if signInResponse is not successful
+      }
+
+      const appwriteResponse = await AuthService.signUp(
+        formValues.fullName,
+        formValues.location,
+        formValues.country,
+        formValues.phoneNumber,
+        formValues.emailAddress,
+        selectedPath,
+        profileAttestationUID
+      );
+
+      console.log("appwrite res:", appwriteResponse);
+
+      if (appwriteResponse) {
+        success(
+          "Profile Created",
+          "Your profile has been created successfully",
+          () => handleSkip(selectedPath)
+        );
+      }
+
+      return appwriteResponse;
     } catch (e) {
-      console.log("Error completing profile:", e);
+      console.error("Error completing profile:", e); // Use console.error for errors
+      error(
+        "Profile Creation failed",
+        "There was a problem creating your profile, please try again!",
+        () => router.push("/")
+      );
+      return;
     } finally {
       setLoading(false);
     }
   };
+
   const onFinishFailed = (errorInfo) => {
     profileForm.resetFields();
     console.log("Failed:", errorInfo);
