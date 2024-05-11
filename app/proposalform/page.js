@@ -19,7 +19,7 @@ export default function ProposalForm() {
   const [loading, setLoading] = useState(false);
   const [proposalForm] = Form.useForm();
   const router = useRouter();
-  const { ready, wallets } = useWallets();
+  const { wallets } = useWallets();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -74,7 +74,8 @@ export default function ProposalForm() {
   const onFinish = async () => {
     setLoading(true);
     const formValues = await proposalForm.validateFields();
-    const wallet = ready && wallets[0];
+    const wallet = wallets[0];
+    console.log("wallet:", wallet);
     // await wallet.switchChain(10);
     const provider = await wallet.getEthersProvider();
     const signer = provider.getSigner();

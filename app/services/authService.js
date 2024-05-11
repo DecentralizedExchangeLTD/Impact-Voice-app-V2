@@ -32,10 +32,7 @@ export class AuthService {
 
   // login user with appwrite
   static async loginAppwriteAccount(emailAddress, password) {
-    const response = accountClient.createEmailPasswordSession(
-      emailAddress,
-      password
-    );
+    const response = accountClient.createEmailSession(emailAddress, password);
 
     return response;
   }

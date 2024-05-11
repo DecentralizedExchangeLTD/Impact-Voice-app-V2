@@ -14,18 +14,18 @@ export default function PathPage() {
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
   const [profileForm] = Form.useForm();
-  const { ready, wallets } = useWallets();
-  const wallet = ready && wallets[0];
+  const { wallets } = useWallets();
+  const wallet = wallets[0];
 
   const onFinish = async () => {
     setLoading(true);
-    // await wallet.switchChain(10);
-    const provider = await wallet.getEthersProvider();
-    const formValues = await profileForm.validateFields();
-
-    const signer = provider.getSigner();
 
     try {
+      // await wallet.switchChain(10);
+      const provider = await wallet?.getEthersProvider();
+      const formValues = await profileForm.validateFields();
+      const signer = provider.getSigner();
+
       const profileAttestationUID = await AuthService.completeUserProfile(
         formValues.fullName,
         formValues.location,
