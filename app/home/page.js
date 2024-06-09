@@ -7,7 +7,7 @@ import { ProposalService } from "../services/proposalService";
 import { AuthService } from "../services/authService";
 import { error } from "../components/Modals";
 import { LoadingScreen } from "../components/LoadingScreen";
-import { useData } from "../hooks/ProposalProvider";
+import { usePrivy } from "@privy-io/react-auth";
 
 const { Search } = Input;
 
@@ -21,23 +21,13 @@ export default function PathPage() {
   const searchParams = useSearchParams();
   const title = searchParams.get("title");
   const pageSize = 8;
-
-  const {
-    user,
-    fetchUser,
-    proposal,
-    fetchProposal,
-    proposals,
-    fetchProposals,
-  } = useData();
+  const { user } = usePrivy();
 
   useEffect(() => {
-    // TODO: Move this to useData() custom hook
-    console.log(user);
     try {
       const fetchUser = async () => {
-        const user = await AuthService.confirmAppwriteAuth();
-        setName(user.name);
+        // const user = await AuthService.confirmAppwriteAuth();
+        setName(user?.email?.address);
       };
 
       const fetchAttestations = async () => {

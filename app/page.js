@@ -13,7 +13,7 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (ready && authenticated) {
-      router.push("/selectpath");
+      router.push("/home?title=Your Proposals");
     }
   }, [ready, authenticated, router]);
 
