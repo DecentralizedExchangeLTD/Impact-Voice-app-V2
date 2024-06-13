@@ -230,4 +230,15 @@ export class ProposalService {
       console.log("error decoding data:", error);
     }
   }
+
+  // get proposal from appwrite
+  static async getProposalFromAppwrite(proposalID) {
+    const response = await databasesClient.listDocuments(
+      appwriteDB,
+      proposalsCollection,
+      [queryParam.equal("proposalUID", proposalID)]
+    );
+
+    return response;
+  }
 }

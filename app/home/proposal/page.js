@@ -22,11 +22,10 @@ export default function Proposal() {
       const provider = await wallet.getEthersProvider();
       try {
         setPageLoading(true);
-        const response = await ProposalService.getProposal(
-          provider,
+        const response = await ProposalService.getProposalFromAppwrite(
           proposalID
         );
-        setData(response);
+        setData(response.documents[0]);
         if (!response) {
           error(
             "Network Error",
@@ -68,25 +67,25 @@ export default function Proposal() {
         </div>
 
         <div className="w-full rounded-3xl bg-white flex flex-col gap-5 px-4 py-6 text-sm">
-          <h1 className="font-semibold text-center text-base">{data["0"]}</h1>
+          <h1 className="font-semibold text-center text-base">{data?.title}</h1>
           <p>
-            <strong>Summary:</strong> {data["1"]}
+            <strong>Summary:</strong> {data?.summary}
           </p>
 
           <p>
-            <strong>Problem:</strong> {data["2"]}
+            <strong>Problem:</strong> {data?.problem}
           </p>
 
           <p>
-            <strong>Solution:</strong> {data["3"]}
+            <strong>Solution:</strong> {data?.solution}
           </p>
           <ul>
-            <strong>Specifications:</strong> <li>{data["4"]}</li>
+            <strong>Specifications:</strong> <li>{data?.specifications}</li>
           </ul>
 
           <ul>
             <strong>Steps to Implement:</strong>{" "}
-            {data["5"]?.map((item, index) => (
+            {data?.steps?.map((item, index) => (
               <li className="mb-2" key={index}>
                 {index + 1}. {item}
               </li>
@@ -95,7 +94,7 @@ export default function Proposal() {
 
           <ul>
             <strong>Collaborators:</strong>{" "}
-            {data["6"]?.map((item, index) => (
+            {data?.collaborators?.map((item, index) => (
               <li className="mb-1" key={index}>
                 {index + 1}. {item}
               </li>
@@ -103,12 +102,12 @@ export default function Proposal() {
           </ul>
 
           <p>
-            <strong>Timeline:</strong> {data["7"]}
+            <strong>Timeline:</strong> {data?.timeline}
           </p>
 
           <ul>
             <strong>Milestones:</strong>{" "}
-            {data["10"]?.map((item, index) => (
+            {data?.milestones?.map((item, index) => (
               <li className="mb-2" key={index}>
                 {index + 1}.{" "}
                 {item.split("BREAKPOINT").map((item, index) => (
@@ -119,11 +118,11 @@ export default function Proposal() {
           </ul>
 
           <p>
-            <strong>Total Budget:</strong> {data["8"]}
+            <strong>Total Budget:</strong> {data?.budget}
           </p>
 
           <p>
-            <strong>Affected Area:</strong> {data["9"]}
+            <strong>Affected Area:</strong> {data?.location}
           </p>
         </div>
       </div>

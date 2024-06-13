@@ -34,7 +34,6 @@ export default function PathPage() {
         const response = await ProposalService.fetchProposals();
         setData(response.documents);
         setFilteredProposals(response.documents);
-        console.log(response.documents);
       };
 
       fetchAttestations();
