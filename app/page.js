@@ -59,14 +59,14 @@ export default function AuthPage() {
             >
               {disableLogin ? "Please wait.." : "Sign in"}
             </Button>
-            <p className="w-5/6">
+            {/* <p className="w-5/6">
               You will need Meta Mask to sign in with your wallet address. If
               you haven’t set one up yet{" "}
               <a href="#" className="text-blue-500">
                 click here
               </a>
               .
-            </p>
+            </p> */}
             <p className="absolute bottom-0 pb-4 font-extralight text-xs">
               powered by <b>impact stream</b>
             </p>

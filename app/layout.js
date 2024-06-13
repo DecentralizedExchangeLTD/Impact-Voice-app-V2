@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
               },
               defaultChain: optimism,
               supportedChains: [optimism],
-              loginMethods: ["email", "wallet", "google", "sms"],
+              loginMethods: ["email"],
             }}
           >
             {children}
